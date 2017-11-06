@@ -9,7 +9,7 @@ $(function() {
 	  [
 	   "https://cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js",
 	   "https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.2/Rx.min.js",
-	   "https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js",
+	   "https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"
 	  ].forEach(loadScript)
 
 
@@ -29,7 +29,7 @@ $(function() {
 	  [
 	   "https://cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js",
 	   "https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.2/Rx.min.js",
-	   "https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js",
+	   "https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"
 	  ].forEach(loadScript)
 
     var course_id = matchAssignment[1];
