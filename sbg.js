@@ -5,6 +5,14 @@ $(function() {
   var matchAssignment = location.href.match(/\/courses\/(\d+)\/gradebook#tab-assignment/);
 
   if (matchOutcome) {
+
+	  [
+	   "https://cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js",
+	   "https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.2/Rx.min.js",
+	   "https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js",
+	  ].forEach(loadScript)
+
+
     var course_id = matchOutcome[1];
     console.log("course_id: " + course_id);
     $.get("/api/v1/courses/"+course_id+"/outcome_results")
@@ -17,6 +25,13 @@ $(function() {
         console.dir(err);
       });
   } else if(matchAssignment) {
+
+	  [
+	   "https://cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js",
+	   "https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.2/Rx.min.js",
+	   "https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js",
+	  ].forEach(loadScript)
+
     var course_id = matchAssignment[1];
     console.log("course_id: " + course_id);
     $.get("/api/v1/courses/"+course_id+"/outcome_results")
