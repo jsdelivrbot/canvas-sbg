@@ -3,6 +3,7 @@ var loadSbg = function(course_id){
   Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/outcome_results`))
     .do(console.log)
     .map(R.propOr({}, 'data'))
+    .do(console.log)
     .subscribe();
 
   // $.get("/api/v1/courses/"+course_id+"/outcome_results")
