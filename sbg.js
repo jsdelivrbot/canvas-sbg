@@ -1,4 +1,4 @@
-var loadSbg = function(){
+var loadSbg = function(course_id){
 
   Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/outcome_results`))
     .do(console.log)
@@ -31,7 +31,7 @@ $(function() {
     loadScript("https://cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js", function(){
     	loadScript("https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.2/Rx.min.js", function(){
     		loadScript("https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js", function(){
-          loadSbg()
+          loadSbg(course_id)
     		})
     	})
     })
