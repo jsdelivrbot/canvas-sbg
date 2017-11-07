@@ -13,4 +13,4 @@ var loadScript = function(src, callback) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-$(function() { loadScript("https://cdn.rawgit.com/coshx/canvas-sbg/32a8d418/sbg.js") });
+$(function() { loadScript("https://rawgit.com/coshx/canvas-sbg/master/sbg.js") });
