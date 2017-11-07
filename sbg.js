@@ -1,21 +1,95 @@
+var addOutcomeResultToColumn = function(course_id, columns, outcomes, outcomeResult){
+
+  learningOutcomeId = R.pathOr(null, ['links', 'learning_outcome'], outcomeResult)
+
+  console.log(learningOutcomeId, outcomes)
+
+	learningOutcome = R.find(R.pathEq(['id'], Number(learningOutcomeId)), outcomes)
+
+	column = R.find(R.pathEq(['title'], learningOutcome.title), columns) 
+
+	column_id = column.id
+
+	user_id = R.pathOr(null, ['links', 'user'], outcomeResult)
+
+	console.log(course_id, column_id, user_id, outcomeResult)
+
+  // TODO use/fix axios?
+	$.ajax({
+	  type: "PUT",
+	  url: `api/v1/courses/${course_id}/custom_gradebook_columns/${column_id}/data/${user_id}`,
+	  data: {
+	    column_data: {
+	      content: `<b>${outcomeResult.score}</b>`
+	    }
+	  },
+	  success: function(){},
+	  dataType: function(){}
+	});
+}
+
+var populateOutcomeColumns = function(course_id, outcomes){
+	Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/outcome_results`))
+    .map(R.pathOr({}, ['data', 'outcome_results']))
+    .flatMap(outcomeResults => {
+      return Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/custom_gradebook_columns`))
+        .map(R.pathOr({}, ['data']))
+        .flatMap(columns => {
+        	return Rx.Observable.from(outcomeResults)
+        	  .do(outcomeResult => addOutcomeResultToColumn(course_id, columns, outcomes, outcomeResult))
+        })
+    })
+    .subscribe();
+} 
+
+var createColumn = function(course_id, title){
+	// Rx.Observable.fromPromise(axios.post(`/api/v1/courses/${course_id}/custom_gradebook_columns`, { column: { title } }))
+	//   .subscribe()
+
+	$.ajax({
+	  type: "POST",
+	  url: `/api/v1/courses/${course_id}/custom_gradebook_columns`,
+	  data: {
+	    column: {
+	      title: title
+	    }
+	  },
+	  success: function(){},
+	  dataType: function(){}
+	});
+}
+
+var findOrCreateOutcomeColumns = function(course_id, outcomes){
+	Rx.Observable.from(outcomes)
+	  .flatMap(outcome => {
+	  	return Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/custom_gradebook_columns`))
+	  	  .map(R.pathOr({}, ['data']))
+	  	  .map(R.map(R.path(['title'])))
+	  	  .map(columnTitles => R.contains(outcome.title, columnTitles))
+	  	  .do(columnExists => {
+	  	  	if(columnExists){
+            // found...
+	  	  	} else {
+            createColumn(course_id, outcome.title)
+	  	  	}
+	  	  })
+	  })
+	  .subscribe()
+}
+
 var loadSbg = function(course_id){
 
-  Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/outcome_results`))
-    .do(console.log)
-    .map(R.propOr({}, 'data'))
-    .do(console.log)
-    .subscribe();
-
-  // $.get("/api/v1/courses/"+course_id+"/outcome_results")
-  //   .done(function(data) {
-  //     console.log("Got data for course: " + course_id);
-  //     console.dir(data);
-  //   })
-  //   .error(function(err) {
-  //     console.log("An error occurred trying to get outcome results for course: " + course_id);
-  //     console.dir(err);
-  //   });
-  // console.log("not on gradebook outcome mastery tab");
+  Rx.Observable.fromPromise(axios.get(`/api/v1/courses/${course_id}/root_outcome_group`))
+    .map(R.pathOr({}, ['data', 'outcomes_url']))
+    .flatMap(outcomes_url => Rx.Observable.fromPromise(axios.get(outcomes_url)))
+    .map(R.pathOr({}, ['data']))
+    .map(R.map(R.path(['outcome'])))
+    .flatMap(outcomes => {
+    	findOrCreateOutcomeColumns(course_id, outcomes)
+    	populateOutcomeColumns(course_id, outcomes)
+    	return Rx.Observable.of({})
+    })
+    .subscribe()
 
 }
 
