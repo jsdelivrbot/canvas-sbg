@@ -1,12 +1,15 @@
 var colorColumns = function(){
 	Rx.Observable.from($('.custom_column')).do(cellEl => { 
-	  percentScore = Number($(cellEl).text().replace('%', ''))
-	  if(percentScore > 60){
-	    $(cellEl).css('background-color', 'rgba(106, 132, 63, 0.5)')
-	  } else if(percentScore > 30){
-	    $(cellEl).css('background-color', 'rgba(138, 172, 83, 0.5)')
-	  } else {
-	    $(cellEl).css('background-color', 'rgba(223, 91, 89, 0.5)')
+		cellValue = $(cellEl).text()
+	  if(cellValue != ''){
+  	  percentScore = Number(cellValue.replace('%', ''))
+		  if(percentScore > 60){
+		    $(cellEl).css('background-color', 'rgba(106, 132, 63, 0.5)')
+		  } else if(percentScore > 30){
+		    $(cellEl).css('background-color', 'rgba(138, 172, 83, 0.5)')
+		  } else {
+		    $(cellEl).css('background-color', 'rgba(223, 91, 89, 0.5)')
+		  }
 	  }
 	}).subscribe()
 }
