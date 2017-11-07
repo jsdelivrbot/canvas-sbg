@@ -2,8 +2,6 @@ var addOutcomeResultToColumn = function(course_id, columns, outcomes, outcomeRes
 
   learningOutcomeId = R.pathOr(null, ['links', 'learning_outcome'], outcomeResult)
 
-  console.log(learningOutcomeId, outcomes)
-
 	learningOutcome = R.find(R.pathEq(['id'], Number(learningOutcomeId)), outcomes)
 
 	column = R.find(R.pathEq(['title'], learningOutcome.title), columns) 
