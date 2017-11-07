@@ -6,7 +6,7 @@ var colorColumns = function(){
 	  } else if(percentScore > 30){
 	    $(cellEl).css('background-color', 'rgba(138, 172, 83, 0.5)')
 	  } else {
-	    // noop
+	    $(cellEl).css('background-color', 'rgba(223, 91, 89, 0.5)')
 	  }
 	}).subscribe()
 }
@@ -98,7 +98,7 @@ var loadSbg = function(course_id){
     .flatMap(outcomes => {
     	findOrCreateOutcomeColumns(course_id, outcomes)
     	populateOutcomeColumns(course_id, outcomes)
-    	colorColumns()
+    	setTimeout(colorColumns, 1000)
     	return Rx.Observable.of({})
     })
     .subscribe()
