@@ -15,7 +15,7 @@ var addOutcomeResultToColumn = function(course_id, columns, outcomes, outcomeRes
   // TODO use/fix axios?
 	$.ajax({
 	  type: "PUT",
-	  url: `api/v1/courses/${course_id}/custom_gradebook_columns/${column_id}/data/${user_id}`,
+	  url: `/api/v1/courses/${course_id}/custom_gradebook_columns/${column_id}/data/${user_id}`,
 	  data: {
 	    column_data: {
 	      content: `<b>${outcomeResult.score}</b>`
