@@ -1,3 +1,16 @@
+var colorColumns = function(){
+	Rx.Observable.from($('.custom_column')).do(cellEl => { 
+	  percentScore = Number($(cellEl).text().replace('%', ''))
+	  if(percentScore > 60){
+	    $(cellEl).css('background-color', 'rgba(106, 132, 63, 0.5)')
+	  } else if(percentScore > 30){
+	    $(cellEl).css('background-color', 'rgba(138, 172, 83, 0.5)')
+	  } else {
+	    // noop
+	  }
+	}).subscribe()
+}
+
 var addOutcomeResultToColumn = function(course_id, columns, outcomes, outcomeResult){
 
   learningOutcomeId = R.pathOr(null, ['links', 'learning_outcome'], outcomeResult)
@@ -85,6 +98,7 @@ var loadSbg = function(course_id){
     .flatMap(outcomes => {
     	findOrCreateOutcomeColumns(course_id, outcomes)
     	populateOutcomeColumns(course_id, outcomes)
+    	colorColumns()
     	return Rx.Observable.of({})
     })
     .subscribe()
