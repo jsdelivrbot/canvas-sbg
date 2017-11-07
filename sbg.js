@@ -18,7 +18,7 @@ var addOutcomeResultToColumn = function(course_id, columns, outcomes, outcomeRes
 	  url: `/api/v1/courses/${course_id}/custom_gradebook_columns/${column_id}/data/${user_id}`,
 	  data: {
 	    column_data: {
-	      content: `<b>${outcomeResult.score}</b>`
+	      content: `${100 * outcomeResult.percent}%`
 	    }
 	  },
 	  success: function(){},
